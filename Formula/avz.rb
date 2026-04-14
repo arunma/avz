@@ -3,7 +3,7 @@ class Avz < Formula
   homepage "https://github.com/arunma/avz"
   url "https://github.com/arunma/avz/archive/refs/tags/v0.1.0.tar.gz"
   # sha256 will be filled after creating the GitHub release
-  sha256 "PLACEHOLDER"
+  sha256 "d424740ecd1fd6474207d842c58409ce203072a700e5035a54d1800161dfb778"
   license any_of: ["MIT", "Apache-2.0"]
 
   depends_on "rust" => :build
