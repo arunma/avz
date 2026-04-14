@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2021"
 description = "Blistering-fast Avro CLI tool — a modern replacement for avro-tools and fastavro"
 license = "MIT OR Apache-2.0"
+homepage = "https://github.com/arunma/avz"
 repository = "https://github.com/arunma/avz"
+documentation = "https://docs.rs/avz"
+readme = "README.md"
 keywords = ["avro", "cli", "data", "serialization"]
 categories = ["command-line-utilities", "encoding"]
 
