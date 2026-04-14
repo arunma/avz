@@ -6,6 +6,7 @@ pub async fn execute(
     files: &[String],
     s3_client: &Option<S3Client>,
     count: usize,
+    pretty: bool,
 ) -> Result<()> {
-    super::cat::execute(files, s3_client, false, Some(count)).await
+    super::cat::execute(files, s3_client, pretty, Some(count)).await
 }

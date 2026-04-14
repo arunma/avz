@@ -26,10 +26,10 @@ async fn run(cli: Cli) -> error::Result<()> {
         Commands::Cat { files, pretty, head } => {
             commands::cat::execute(&files.files, &s3_client, pretty, head).await
         }
-        Commands::Head { files, count } => {
-            commands::head::execute(&files.files, &s3_client, count).await
+        Commands::Head { files, count, pretty } => {
+            commands::head::execute(&files.files, &s3_client, count, pretty).await
         }
-        Commands::Schema { files } => {
+        Commands::Schema { files, .. } => {
             commands::schema::execute(&files.files, &s3_client).await
         }
         Commands::Count { files } => {
@@ -66,7 +66,7 @@ async fn init_s3_if_needed(command: &Commands) -> Option<S3Client> {
     let has_s3 = match command {
         Commands::Cat { files, .. }
         | Commands::Head { files, .. }
-        | Commands::Schema { files }
+        | Commands::Schema { files, .. }
         | Commands::Count { files }
         | Commands::Meta { files }
         | Commands::Concat { files, .. }

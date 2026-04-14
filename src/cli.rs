@@ -43,6 +43,10 @@ pub enum Commands {
         /// Number of records to show
         #[arg(short = 'n', long, default_value = "10")]
         count: usize,
+
+        /// Pretty-print JSON output
+        #[arg(short, long)]
+        pretty: bool,
     },
 
     /// Print the Avro schema as JSON
