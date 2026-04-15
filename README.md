@@ -475,9 +475,9 @@ $ avz random --schema schema.json -n 3 --seed 42
 ```
 
 ```json
-{"id":-734,"name":"lambda eta","department":"ENGINEERING","salary":-170.08630762927976,"email":"lambda","tags":["iota","mu xi lambda"],"active":false}
-{"id":-680,"name":"lambda iota","department":"ENGINEERING","salary":-297.97835504030877,"email":null,"tags":["lambda omicron","lambda eta"],"active":false}
-{"id":199,"name":"theta","department":"ENGINEERING","salary":-691.6051833537144,"email":"kappa eta eta","tags":["lambda","pi theta","lambda","zeta"],"active":true}
+{"id":52656,"name":"Kate Kim","department":"ENGINEERING","salary":83049.87,"email":"carol821@example.com","tags":["mu xi lambda","iota"],"active":false}
+{"id":5028,"name":"Kate Thomas","department":"MARKETING","salary":101244.93,"email":"bob447@test.org","tags":["delta lambda"],"active":true}
+{"id":80872,"name":"Grace Smith","department":"ENGINEERING","salary":158813.58,"email":"hank875@example.com","tags":["pi nu"],"active":true}
 ```
 
 Pretty-print:
@@ -488,14 +488,14 @@ $ avz random --schema schema.json -n 2 --seed 42 --pretty
 
 ```json
 {
-  "id": -734,
-  "name": "lambda eta",
+  "id": 52656,
+  "name": "Kate Kim",
   "department": "ENGINEERING",
-  "salary": -170.08630762927976,
-  "email": "lambda",
+  "salary": 83049.87,
+  "email": "carol821@example.com",
   "tags": [
-    "iota",
-    "mu xi lambda"
+    "mu xi lambda",
+    "iota"
   ],
   "active": false
 }

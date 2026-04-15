@@ -107,7 +107,7 @@ fn generate_random(schema: &Schema, rng: &mut dyn rand::RngCore) -> Result<Value
                 .fields
                 .iter()
                 .map(|field| {
-                    let val = generate_random(&field.schema, rng)?;
+                    let val = generate_field(&field.name, &field.schema, rng)?;
                     Ok((field.name.clone(), val))
                 })
                 .collect();
@@ -124,4 +124,80 @@ fn generate_random(schema: &Schema, rng: &mut dyn rand::RngCore) -> Result<Value
         }
         _ => Err(AvzError::User(format!("Cannot generate random data for schema: {:?}", schema))),
     }
+}
+
+/// Generate a field value using the field name as a hint for realistic data.
+fn generate_field(name: &str, schema: &Schema, rng: &mut dyn rand::RngCore) -> Result<Value> {
+    let lower = name.to_lowercase();
+
+    // For unions, try to generate a realistic non-null value
+    if let Schema::Union(union_schema) = schema {
+        let variants = union_schema.variants();
+        // Pick null ~20% of the time for nullable fields
+        if variants.iter().any(|s| matches!(s, Schema::Null)) && rng.gen_range(0..5) == 0 {
+            let null_idx = variants.iter().position(|s| matches!(s, Schema::Null)).unwrap();
+            return Ok(Value::Union(null_idx as u32, Box::new(Value::Null)));
+        }
+        // Otherwise pick a non-null variant
+        for (i, variant) in variants.iter().enumerate() {
+            if !matches!(variant, Schema::Null) {
+                let val = generate_field(name, variant, rng)?;
+                return Ok(Value::Union(i as u32, Box::new(val)));
+            }
+        }
+        return generate_random(schema, rng);
+    }
+
+    // Name-based hints for common field patterns
+    if matches!(schema, Schema::Int | Schema::Long) && is_id_field(&lower) {
+        let id = rng.gen_range(1..100000) as i64;
+        return match schema {
+            Schema::Int => Ok(Value::Int(id as i32)),
+            Schema::Long => Ok(Value::Long(id)),
+            _ => unreachable!(),
+        };
+    }
+
+    if matches!(schema, Schema::Float | Schema::Double) && is_money_field(&lower) {
+        let amount: f64 = rng.gen_range(100.0..200000.0);
+        let rounded = (amount * 100.0).round() / 100.0;
+        return match schema {
+            Schema::Float => Ok(Value::Float(rounded as f32)),
+            Schema::Double => Ok(Value::Double(rounded)),
+            _ => unreachable!(),
+        };
+    }
+
+    if matches!(schema, Schema::String) && lower.contains("email") {
+        let first_names = ["alice", "bob", "carol", "dan", "eve", "frank", "grace", "hank",
+                          "ivy", "jack", "kate", "leo", "mia", "noah", "olivia", "pete"];
+        let domains = ["example.com", "test.org", "acme.io", "company.net"];
+        let name = first_names[rng.gen_range(0..first_names.len())];
+        let domain = domains[rng.gen_range(0..domains.len())];
+        let num: u32 = rng.gen_range(1..999);
+        return Ok(Value::String(format!("{}{:03}@{}", name, num, domain)));
+    }
+
+    if matches!(schema, Schema::String) && lower.contains("name") {
+        let first = ["Alice", "Bob", "Carol", "Dan", "Eve", "Frank", "Grace", "Hank",
+                     "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah", "Olivia", "Pete"];
+        let last = ["Chen", "Smith", "Davis", "Wilson", "Park", "Lee", "Kim", "Brown",
+                    "Jones", "Garcia", "Miller", "Taylor", "Thomas", "Moore", "White"];
+        let f = first[rng.gen_range(0..first.len())];
+        let l = last[rng.gen_range(0..last.len())];
+        return Ok(Value::String(format!("{} {}", f, l)));
+    }
+
+    generate_random(schema, rng)
+}
+
+fn is_id_field(name: &str) -> bool {
+    name == "id" || name.ends_with("_id") || name.ends_with("id")
+        || name == "identifier" || name.ends_with("_identifier")
+}
+
+fn is_money_field(name: &str) -> bool {
+    name.contains("salary") || name.contains("price") || name.contains("amount")
+        || name.contains("cost") || name.contains("fee") || name.contains("balance")
+        || name.contains("revenue") || name.contains("budget")
 }
