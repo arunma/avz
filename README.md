@@ -259,8 +259,8 @@ Multiple files show per-file counts and a total:
 
 ```bash
 $ avz count employees.avro employees2.avro
-/tmp/avz-docs/employees.avro: 8
-/tmp/avz-docs/employees2.avro: 8
+employees.avro: 8
+employees2.avro: 8
 total: 16
 ```
 
@@ -475,9 +475,9 @@ $ avz random --schema schema.json -n 3 --seed 42
 ```
 
 ```json
-{"id":-734,"name":"lambda eta","department":"ENGINEERING","salary":-170.08,"email":"lambda","tags":["iota","mu xi lambda"],"active":false}
-{"id":-680,"name":"lambda iota","department":"ENGINEERING","salary":-297.97,"email":null,"tags":["lambda omicron","lambda eta"],"active":false}
-{"id":199,"name":"theta","department":"ENGINEERING","salary":-691.60,"email":"kappa eta eta","tags":["lambda","pi theta","lambda","zeta"],"active":true}
+{"id":-734,"name":"lambda eta","department":"ENGINEERING","salary":-170.08630762927976,"email":"lambda","tags":["iota","mu xi lambda"],"active":false}
+{"id":-680,"name":"lambda iota","department":"ENGINEERING","salary":-297.97835504030877,"email":null,"tags":["lambda omicron","lambda eta"],"active":false}
+{"id":199,"name":"theta","department":"ENGINEERING","salary":-691.6051833537144,"email":"kappa eta eta","tags":["lambda","pi theta","lambda","zeta"],"active":true}
 ```
 
 Pretty-print:
@@ -491,7 +491,7 @@ $ avz random --schema schema.json -n 2 --seed 42 --pretty
   "id": -734,
   "name": "lambda eta",
   "department": "ENGINEERING",
-  "salary": -170.08,
+  "salary": -170.08630762927976,
   "email": "lambda",
   "tags": [
     "iota",
